@@ -1,7 +1,6 @@
 # 🏎️ RaceVision: Formula 1 Analytics & Prediction Platform
 
 ## 📌 Project Overview
-
 Formula 1 is a data-intensive sport involving performance optimization, strategic decision-making, and statistical evaluation.  
 This project is an **end-to-end Formula 1 analytics platform** developed to demonstrate **practical Data Analysis, Data Science, and Machine Learning skills** using real-world sports data.
 
@@ -91,12 +90,11 @@ The project is structured to reflect **industry-style workflows**, making it sui
 - Model evaluation and feature importance analysis
 
 ### Data Sources
-- Ergast API (historical Formula 1 data)
+- Ergast API (historical Formula 1 data) (url: https://api.jolpi.ca/ergast/f1)
 - FastF1 (lap times, pit stops, tire data)
-- Kaggle Formula 1 datasets
 
 ### Deployment & Presentation
-- Streamlit (interactive dashboards)
+- Streamlit (interactive dashboards) 
 - GitHub (version control and documentation)
 
 ---
