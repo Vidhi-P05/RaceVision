@@ -1,0 +1,533 @@
+{% extends "base.html" %}
+
+{% block title %}Standings & Season Trends - F1 Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="bi bi-trophy-fill text-ferrari me-3"></i>
+                    Championship Standings & Season Trends
+                </h1>
+                <p class="section-subtitle">Historical championship evolution and competitive balance analysis</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Season Selector -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <label for="standingsSeasonSelect" class="form-label">Select Season</label>
+                        </div>
+                        <div class="col-md-7">
+                            <select class="form-select" id="standingsSeasonSelect">
+                                <option selected>2023</option>
+                                <option>2022</option>
+                                <option>2021</option>
+                                <option>2020</option>
+                                <option>2019</option>
+                                <option>2018</option>
+                                <option>Historical Comparison</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" id="loadStandings">
+                                <i class="bi bi-search me-1"></i>Load
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Season Summary Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-person-fill text-gold" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-gold mt-3 mb-1">Max Verstappen</h3>
+                    <p class="text-muted mb-0">Driver Champion</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-building text-ferrari" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-ferrari mt-3 mb-1">Red Bull Racing</h3>
+                    <p class="text-muted mb-0">Constructor Champion</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-flag-fill text-positive" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-positive mt-3 mb-1">22</h3>
+                    <p class="text-muted mb-0">Total Races</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-graph-up" style="font-size: 2.5rem; color: #1F6AE1;"></i>
+                    <h3 style="color: #1F6AE1;" class="mt-3 mb-1">575</h3>
+                    <p class="text-muted mb-0">Winning Margin (pts)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Championship Evolution -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Driver Championship Standings Evolution (2023)
+                </h3>
+                <div id="driverStandingsChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Dominance Analysis:</strong> Max Verstappen established an early lead and 
+                        maintained dominance throughout the season, clinching the championship with 5 races 
+                        remaining. His point advantage grew exponentially after mid-season, reaching a record 
+                        575-point margin over the runner-up.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Constructor Championship Evolution -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-building"></i>
+                    Constructor Championship Standings Evolution (2023)
+                </h3>
+                <div id="constructorStandingsChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Team Battle:</strong> Red Bull Racing secured both championships with dominant 
+                        performances. The battle for second place between Mercedes and Ferrari remained 
+                        competitive until the final races, showcasing the tight midfield competition despite 
+                        Red Bull's superiority.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Points Distribution -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-pie-chart-fill"></i>
+                    Final Points Distribution (Top 10 Drivers)
+                </h3>
+                <div id="pointsDistributionChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Share Analysis:</strong> Verstappen alone accounted for 33% of Red Bull's 
+                        total points, demonstrating individual excellence within team success.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-bar-chart-fill"></i>
+                    Constructor Points Breakdown
+                </h3>
+                <div id="constructorBreakdownChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Team Balance:</strong> Red Bull's success was built on both drivers scoring 
+                        consistently, with a 70-30 point split between Verstappen and Pérez.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Competitive Balance Analysis -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-diagram-3"></i>
+                    Competitive Balance Across Seasons (2010-2023)
+                </h3>
+                <div id="competitiveBalanceChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Parity Index:</strong> The competitive balance metric (Herfindahl-Hirschman Index) 
+                        shows periods of high dominance (Red Bull 2011-2013, Mercedes 2014-2020, Red Bull 2023) 
+                        alternating with closer championships (2010, 2012, 2021). Lower values indicate more 
+                        competitive seasons with multiple teams winning races.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historical Champions Table -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-trophy-fill me-2"></i>Recent Driver Champions
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Driver</th>
+                                    <th>Team</th>
+                                    <th>Points</th>
+                                    <th>Wins</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <td class="text-gold">2023</td>
+                                    <td><strong>Max Verstappen</strong></td>
+                                    <td>Red Bull</td>
+                                    <td class="text-positive">575</td>
+                                    <td>19</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2022</td>
+                                    <td><strong>Max Verstappen</strong></td>
+                                    <td>Red Bull</td>
+                                    <td class="text-positive">454</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2021</td>
+                                    <td><strong>Max Verstappen</strong></td>
+                                    <td>Red Bull</td>
+                                    <td class="text-positive">395.5</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>2020</td>
+                                    <td>Lewis Hamilton</td>
+                                    <td>Mercedes</td>
+                                    <td>347</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>2019</td>
+                                    <td>Lewis Hamilton</td>
+                                    <td>Mercedes</td>
+                                    <td>413</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>2018</td>
+                                    <td>Lewis Hamilton</td>
+                                    <td>Mercedes</td>
+                                    <td>408</td>
+                                    <td>11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-building me-2"></i>Recent Constructor Champions
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Constructor</th>
+                                    <th>Points</th>
+                                    <th>Wins</th>
+                                    <th>Podiums</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <td class="text-gold">2023</td>
+                                    <td><strong>Red Bull Racing</strong></td>
+                                    <td class="text-positive">860</td>
+                                    <td>21</td>
+                                    <td>38</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2022</td>
+                                    <td><strong>Red Bull Racing</strong></td>
+                                    <td class="text-positive">759</td>
+                                    <td>17</td>
+                                    <td>35</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2021</td>
+                                    <td><strong>Mercedes</strong></td>
+                                    <td class="text-positive">613.5</td>
+                                    <td>13</td>
+                                    <td>28</td>
+                                </tr>
+                                <tr>
+                                    <td>2020</td>
+                                    <td>Mercedes</td>
+                                    <td>573</td>
+                                    <td>13</td>
+                                    <td>26</td>
+                                </tr>
+                                <tr>
+                                    <td>2019</td>
+                                    <td>Mercedes</td>
+                                    <td>739</td>
+                                    <td>15</td>
+                                    <td>32</td>
+                                </tr>
+                                <tr>
+                                    <td>2018</td>
+                                    <td>Mercedes</td>
+                                    <td>655</td>
+                                    <td>11</td>
+                                    <td>31</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Season Statistics -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-clipboard-data me-2"></i>2023 Season Statistics
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-ferrari">95.5%</h5>
+                            <p class="text-muted mb-0">Red Bull Win Rate</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-gold">15</h5>
+                            <p class="text-muted mb-0">Consecutive Wins (Record)</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-positive">8</h5>
+                            <p class="text-muted mb-0">Different Race Winners</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 style="color: #1F6AE1;">22</h5>
+                            <p class="text-muted mb-0">Different Podium Finishers</p>
+                        </div>
+                    </div>
+                    <hr class="my-4" style="border-color: rgba(225, 6, 0, 0.3);">
+                    <div class="row g-4">
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-ferrari">63%</h5>
+                            <p class="text-muted mb-0">Races with Safety Car</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-gold">4.2</h5>
+                            <p class="text-muted mb-0">Avg. Retirements per Race</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-positive">91%</h5>
+                            <p class="text-muted mb-0">Pole → Win Conversion</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 style="color: #1F6AE1;">2.1s</h5>
+                            <p class="text-muted mb-0">Average Pit Stop Time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Driver Standings Evolution
+    var verstappenData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [25, 69, 93, 119, 144, 170, 195, 229, 255, 281, 314, 339, 364, 389, 433, 466, 491, 516, 549, 575, 575, 575],
+        name: 'Max Verstappen',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#E10600', width: 3}
+    };
+
+    var perezData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [18, 36, 54, 87, 105, 117, 135, 156, 171, 189, 206, 219, 224, 234, 240, 258, 273, 273, 273, 285, 285, 285],
+        name: 'Sergio Pérez',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#1F6AE1', width: 2}
+    };
+
+    var hamiltonData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [12, 20, 38, 56, 69, 87, 102, 121, 133, 148, 164, 180, 190, 206, 220, 234, 241, 256, 267, 275, 282, 234],
+        name: 'Lewis Hamilton',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#00D2BE', width: 2}
+    };
+
+    Plotly.newPlot('driverStandingsChart', [verstappenData, perezData, hamiltonData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Race Number'},
+        yaxis: {title: 'Championship Points'},
+        hovermode: 'x unified',
+        legend: {x: 0.05, y: 0.95}
+    }, {responsive: true});
+
+    // Constructor Standings
+    var redBullData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [43, 105, 147, 206, 249, 287, 330, 385, 426, 470, 520, 558, 588, 623, 673, 724, 764, 789, 822, 860, 860, 860],
+        name: 'Red Bull',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#E10600', width: 3},
+        fill: 'tozeroy',
+        fillcolor: 'rgba(225, 6, 0, 0.1)'
+    };
+
+    var mercedesData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [16, 28, 56, 84, 109, 137, 158, 191, 212, 241, 273, 298, 314, 341, 366, 390, 406, 424, 441, 459, 476, 409],
+        name: 'Mercedes',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#00D2BE', width: 2}
+    };
+
+    var ferrariData = {
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        y: [26, 50, 74, 104, 123, 151, 172, 198, 224, 252, 279, 299, 320, 345, 370, 388, 406, 425, 439, 454, 469, 406],
+        name: 'Ferrari',
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#DC0000', width: 2}
+    };
+
+    Plotly.newPlot('constructorStandingsChart', [redBullData, mercedesData, ferrariData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Race Number'},
+        yaxis: {title: 'Championship Points'},
+        hovermode: 'x unified',
+        legend: {x: 0.05, y: 0.95}
+    }, {responsive: true});
+
+    // Points Distribution
+    var pointsDistData = [{
+        values: [575, 285, 234, 206, 200, 175, 165, 97, 87, 74],
+        labels: ['Verstappen', 'Pérez', 'Hamilton', 'Alonso', 'Sainz', 'Leclerc', 'Norris', 'Russell', 'Piastri', 'Stroll'],
+        type: 'pie',
+        marker: {
+            colors: ['#E10600', '#1F6AE1', '#00D2BE', '#006F62', '#DC0000', '#DC0000', '#FF8700', '#00D2BE', '#FF8700', '#006F62']
+        },
+        textinfo: 'label+percent'
+    }];
+
+    Plotly.newPlot('pointsDistributionChart', pointsDistData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        showlegend: false,
+        height: 350
+    }, {responsive: true});
+
+    // Constructor Breakdown
+    var constructorData = [{
+        x: ['Red Bull', 'Mercedes', 'Ferrari', 'McLaren', 'Aston Martin'],
+        y: [860, 409, 406, 302, 280],
+        type: 'bar',
+        marker: {
+            color: ['#E10600', '#00D2BE', '#DC0000', '#FF8700', '#006F62']
+        }
+    }];
+
+    Plotly.newPlot('constructorBreakdownChart', constructorData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Constructor'},
+        yaxis: {title: 'Total Points'},
+        height: 350
+    }, {responsive: true});
+
+    // Competitive Balance (HHI Index - lower = more competitive)
+    var balanceData = {
+        x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        y: [0.28, 0.42, 0.25, 0.45, 0.51, 0.48, 0.46, 0.52, 0.49, 0.47, 0.53, 0.31, 0.44, 0.62],
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#F5C542', width: 3},
+        marker: {size: 8},
+        fill: 'tozeroy',
+        fillcolor: 'rgba(245, 197, 66, 0.1)'
+    };
+
+    Plotly.newPlot('competitiveBalanceChart', [balanceData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Dominance Index (Higher = Less Competitive)'},
+        hovermode: 'x unified',
+        shapes: [
+            {
+                type: 'line',
+                x0: 2010,
+                x1: 2023,
+                y0: 0.33,
+                y1: 0.33,
+                line: {color: '#8A8A8A', width: 1, dash: 'dash'}
+            }
+        ],
+        annotations: [
+            {x: 2016, y: 0.35, text: 'Moderate Competition Threshold', showarrow: false, font: {size: 10, color: '#8A8A8A'}}
+        ]
+    }, {responsive: true});
+</script>
+{% endblock %}

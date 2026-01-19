@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Home - F1 Analytics Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mb-5 animate-fade-in">
+        <div class="col-12 text-center">
+            <h1 class="display-3 fw-bold mb-3">
+                <span class="text-ferrari">Formula 1</span> Analytics & Prediction Platform
+            </h1>
+            <p class="lead text-secondary mb-4">
+                Comprehensive data-driven insights and machine learning predictions for F1 racing
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('eda.eda_overview') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-bar-chart-line me-2"></i>Explore Analytics
+                </a>
+                <a href="{{ url_for('ml.ml_predictions') }}" class="btn btn-secondary btn-lg">
+                    <i class="bi bi-cpu me-2"></i>View Predictions
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Summary -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle me-2"></i>Project Overview
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        This platform combines historical F1 data analysis with cutting-edge machine learning 
+                        to provide deep insights into driver performance, constructor dominance, circuit 
+                        characteristics, and race predictions. Built with Flask, MongoDB, and advanced 
+                        ML models, it offers both exploratory data analysis and predictive capabilities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="section-header text-center">
+                <h2 class="section-title">Platform Capabilities</h2>
+                <p class="section-subtitle">What you can explore and analyze</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-person-circle kpi-icon"></i>
+                    <h5 class="card-title">Driver Analysis</h5>
+                    <p class="card-text">
+                        Track individual driver performance, career progression, and competitive statistics
+                    </p>
+                    <a href="{{ url_for('eda.driver_analysis') }}" class="btn btn-outline-primary btn-sm mt-2">
+                        Explore <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-speedometer2 kpi-icon"></i>
+                    <h5 class="card-title">Constructor Insights</h5>
+                    <p class="card-text">
+                        Analyze team performance, championship records, and technical evolution over decades
+                    </p>
+                    <a href="{{ url_for('eda.constructor_analysis') }}" class="btn btn-outline-primary btn-sm mt-2">
+                        Explore <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-geo-alt-fill kpi-icon"></i>
+                    <h5 class="card-title">Circuit Analytics</h5>
+                    <p class="card-text">
+                        Understand circuit characteristics, lap time trends, and track-specific patterns
+                    </p>
+                    <a href="{{ url_for('eda.circuit_analysis') }}" class="btn btn-outline-primary btn-sm mt-2">
+                        Explore <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-trophy-fill kpi-icon"></i>
+                    <h5 class="card-title">Race Predictions</h5>
+                    <p class="card-text">
+                        ML-powered predictions for race outcomes with explainable AI insights
+                    </p>
+                    <a href="{{ url_for('ml.ml_predictions') }}" class="btn btn-outline-primary btn-sm mt-2">
+                        Predict <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Architecture Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="section-header text-center">
+                <h2 class="section-title">System Architecture</h2>
+                <p class="section-subtitle">Built with modern, scalable technologies</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-database-fill text-ferrari" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Data Layer</h5>
+                    <p class="card-text text-muted">
+                        MongoDB for flexible document storage<br>
+                        Ergast F1 API integration<br>
+                        Automated data pipelines
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-gear-fill text-ferrari" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Backend & ML</h5>
+                    <p class="card-text text-muted">
+                        Flask REST API<br>
+                        Scikit-learn & XGBoost models<br>
+                        Feature engineering pipeline
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-window-desktop text-ferrari" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Frontend</h5>
+                    <p class="card-text text-muted">
+                        Jinja2 templating<br>
+                        Bootstrap 5 responsive design<br>
+                        Interactive Plotly visualizations
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Stack Highlights -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-stack me-2"></i>Technology Stack
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Core Technologies</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Python 3.10+</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Flask Web Framework</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>MongoDB Database</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Jinja2 Templating</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">ML & Visualization</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Scikit-learn & XGBoost</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Plotly Interactive Charts</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>Bootstrap 5 UI Framework</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-positive me-2"></i>SHAP for Model Explainability</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-gradient-ferrari">
+                <div class="card-body text-center py-4">
+                    <h4 class="mb-3">Ready to Explore?</h4>
+                    <p class="mb-4">Choose your starting point</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="{{ url_for('eda.eda_overview') }}" class="btn btn-light">
+                            <i class="bi bi-bar-chart-line me-2"></i>EDA Dashboard
+                        </a>
+                        <a href="{{ url_for('eda.driver_analysis') }}" class="btn btn-light">
+                            <i class="bi bi-person-circle me-2"></i>Driver Stats
+                        </a>
+                        <a href="{{ url_for('ml.ml_predictions') }}" class="btn btn-light">
+                            <i class="bi bi-cpu me-2"></i>ML Predictions
+                        </a>
+                        <a href="{{ url_for('home_eda.about') }}" class="btn btn-outline-light">
+                            <i class="bi bi-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

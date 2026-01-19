@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}ML Predictions - F1 Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="bi bi-cpu text-ferrari me-3"></i>
+                    Race Outcome Predictions
+                </h1>
+                <p class="section-subtitle">Machine learning-powered predictions for Formula 1 race results</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Selector -->
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-sliders me-2"></i>Model Configuration
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="modelSelect" class="form-label">ML Model</label>
+                            <select class="form-select" id="modelSelect">
+                                <option selected>XGBoost Classifier</option>
+                                <option>Random Forest</option>
+                                <option>Gradient Boosting</option>
+                                <option>Neural Network</option>
+                                <option>Ensemble Model</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Model Accuracy</label>
+                            <div class="p-2 bg-dark rounded text-center">
+                                <span class="text-positive fw-bold">78.4%</span>
+                                <small class="text-muted d-block">on validation set</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Features Used</label>
+                            <div class="p-2 bg-dark rounded text-center">
+                                <span class="text-gold fw-bold">42</span>
+                                <small class="text-muted d-block">engineered features</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Panel -->
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-input-cursor me-2"></i>Race Configuration
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="seasonInput" class="form-label">Season</label>
+                            <select class="form-select" id="seasonInput">
+                                <option>2024</option>
+                                <option selected>2023</option>
+                                <option>2022</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="circuitInput" class="form-label">Circuit</label>
+                            <select class="form-select" id="circuitInput">
+                                <option selected>Monaco</option>
+                                <option>Silverstone</option>
+                                <option>Monza</option>
+                                <option>Spa-Francorchamps</option>
+                                <option>Suzuka</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="weatherInput" class="form-label">Weather Condition</label>
+                            <select class="form-select" id="weatherInput">
+                                <option selected>Dry</option>
+                                <option>Wet</option>
+                                <option>Mixed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="driver1Input" class="form-label">Top Driver 1</label>
+                            <select class="form-select" id="driver1Input">
+                                <option selected>Max Verstappen</option>
+                                <option>Lewis Hamilton</option>
+                                <option>Charles Leclerc</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="constructor1Input" class="form-label">Constructor</label>
+                            <select class="form-select" id="constructor1Input">
+                                <option selected>Red Bull Racing</option>
+                                <option>Mercedes</option>
+                                <option>Ferrari</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg" id="predictBtn">
+                            <i class="bi bi-play-circle me-2"></i>Generate Prediction
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Results -->
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card border-ferrari">
+                <div class="card-header bg-gradient-ferrari">
+                    <i class="bi bi-trophy-fill me-2"></i>Prediction Results
+                </div>
+                <div class="card-body">
+                    <div class="row g-4 mb-4">
+                        <!-- Predicted Winner -->
+                        <div class="col-md-4">
+                            <div class="text-center p-4 bg-dark rounded">
+                                <i class="bi bi-trophy-fill text-gold" style="font-size: 3rem;"></i>
+                                <h4 class="text-gold mt-3 mb-2">Predicted Winner</h4>
+                                <h3 class="text-ferrari mb-1">Max Verstappen</h3>
+                                <p class="text-muted mb-0">Red Bull Racing</p>
+                            </div>
+                        </div>
+
+                        <!-- Confidence Score -->
+                        <div class="col-md-4">
+                            <div class="text-center p-4 bg-dark rounded">
+                                <i class="bi bi-percent text-positive" style="font-size: 3rem;"></i>
+                                <h4 class="text-positive mt-3 mb-2">Confidence</h4>
+                                <h3 class="text-gold mb-1">87.3%</h3>
+                                <p class="text-muted mb-0">High Confidence</p>
+                            </div>
+                        </div>
+
+                        <!-- Expected Gap -->
+                        <div class="col-md-4">
+                            <div class="text-center p-4 bg-dark rounded">
+                                <i class="bi bi-clock-history" style="font-size: 3rem; color: #1F6AE1;"></i>
+                                <h4 style="color: #1F6AE1;" class="mt-3 mb-2">Est. Gap to P2</h4>
+                                <h3 class="text-gold mb-1">+18.2s</h3>
+                                <p class="text-muted mb-0">Projected Margin</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Podium Predictions -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-ferrari mb-3">
+                                <i class="bi bi-award me-2"></i>Full Podium Prediction
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Position</th>
+                                            <th>Driver</th>
+                                            <th>Constructor</th>
+                                            <th>Probability</th>
+                                            <th>Confidence</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge badge-gold">P1</span></td>
+                                            <td>Max Verstappen</td>
+                                            <td>Red Bull Racing</td>
+                                            <td>87.3%</td>
+                                            <td><div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-success" style="width: 87%">87%</div>
+                                            </div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge" style="background: silver;">P2</span></td>
+                                            <td>Charles Leclerc</td>
+                                            <td>Ferrari</td>
+                                            <td>64.2%</td>
+                                            <td><div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-warning" style="width: 64%">64%</div>
+                                            </div></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge" style="background: #CD7F32;">P3</span></td>
+                                            <td>Lewis Hamilton</td>
+                                            <td>Mercedes</td>
+                                            <td>58.7%</td>
+                                            <td><div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" style="width: 59%">59%</div>
+                                            </div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Factors Chart -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-ferrari mb-3">
+                                <i class="bi bi-graph-up me-2"></i>Prediction Influencing Factors
+                            </h5>
+                            <div id="factorsChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Insights -->
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-lightbulb me-2"></i>Prediction Insights
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-positive me-2"></i>
+                            <strong>Strong Historical Performance:</strong> Driver has won 75% of races at this circuit in the past 3 seasons
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-positive me-2"></i>
+                            <strong>Optimal Car-Track Fit:</strong> Constructor's car characteristics align well with circuit requirements
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-exclamation-triangle-fill text-gold me-2"></i>
+                            <strong>Weather Variability:</strong> Monaco weather can change rapidly; wet conditions could alter predictions
+                        </li>
+                        <li class="mb-0">
+                            <i class="bi bi-info-circle-fill text-ferrari me-2"></i>
+                            <strong>Model Limitation:</strong> Does not account for mechanical failures or first-lap incidents
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="mb-3">Explore More</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="{{ url_for('ml.ml_explainability') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-gear me-1"></i>Model Explainability
+                        </a>
+                        <a href="{{ url_for('ml.ml_validation') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-clipboard-check me-1"></i>Validation Metrics
+                        </a>
+                        <a href="{{ url_for('eda.driver_analysis') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-person-circle me-1"></i>Driver Stats
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Prediction factors chart
+    var factorsData = [{
+        x: [0.35, 0.28, 0.18, 0.12, 0.07],
+        y: ['Driver Form', 'Constructor Performance', 'Circuit History', 'Grid Position', 'Weather'],
+        type: 'bar',
+        orientation: 'h',
+        marker: {
+            color: ['#E10600', '#F5C542', '#2ECC71', '#1F6AE1', '#8A8A8A']
+        }
+    }];
+
+    var factorsLayout = {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Impact Weight', range: [0, 0.4]},
+        yaxis: {title: ''},
+        margin: {l: 150},
+        height: 300
+    };
+
+    Plotly.newPlot('factorsChart', factorsData, factorsLayout, {responsive: true});
+
+    // Predict button interaction
+    document.getElementById('predictBtn').addEventListener('click', function() {
+        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Predicting...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+            this.innerHTML = '<i class="bi bi-check-circle me-2"></i>Prediction Complete';
+            this.classList.add('btn-success');
+            setTimeout(() => {
+                this.innerHTML = '<i class="bi bi-play-circle me-2"></i>Generate Prediction';
+                this.classList.remove('btn-success');
+                this.disabled = false;
+            }, 2000);
+        }, 1500);
+    });
+</script>
+{% endblock %}

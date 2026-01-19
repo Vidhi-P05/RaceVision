@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}EDA Overview - F1 Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="bi bi-bar-chart-line text-ferrari me-3"></i>
+                    Exploratory Data Analysis Dashboard
+                </h1>
+                <p class="section-subtitle">High-level insights into Formula 1 historical data</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="kpi-card animate-fade-in">
+                <i class="bi bi-calendar-range kpi-icon"></i>
+                <span class="kpi-value">{{ kpis.total_seasons }}</span>
+                <span class="kpi-label">Total Seasons</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="kpi-card animate-fade-in" style="animation-delay: 0.1s;">
+                <i class="bi bi-flag-fill kpi-icon"></i>
+                <span class="kpi-value">{{ kpis.total_races }}</span>
+                <span class="kpi-label">Total Races</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="kpi-card animate-fade-in" style="animation-delay: 0.2s;">
+                <i class="bi bi-person-circle kpi-icon"></i>
+                <span class="kpi-value">{{ kpis.total_drivers }}</span>
+                <span class="kpi-label">Total Drivers</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="kpi-card animate-fade-in" style="animation-delay: 0.3s;">
+                <i class="bi bi-speedometer2 kpi-icon"></i>
+                <span class="kpi-value">{{ kpis.total_constructors }}</span>
+                <span class="kpi-label">Total Constructors</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Races per Season Chart -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-graph-up"></i>
+                    Races per Season Evolution
+                </h3>
+                <div id="racesPerSeasonChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Key Insight:</strong> The number of races per season has grown significantly 
+                        from just 7 races in 1950 to over 20 races in recent years, reflecting the global 
+                        expansion of Formula 1 and increasing commercial opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drivers and Constructors Trends -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-people-fill"></i>
+                    Drivers per Season
+                </h3>
+                <div id="driversPerSeasonChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Observation:</strong> The average number of drivers competing per season 
+                        has stabilized around 20-24 in the modern era, matching the grid size regulations.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-building"></i>
+                    Constructors per Season
+                </h3>
+                <div id="constructorsPerSeasonChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Observation:</strong> Constructor participation has decreased from the peak 
+                        in the 1980s-90s to a stable 10 teams in recent seasons, driven by cost regulations 
+                        and commercial agreements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Quality Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-clipboard-data me-2"></i>Dataset Summary
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <h5 class="text-ferrari">73 Years</h5>
+                            <p class="text-muted mb-0">of F1 History</p>
+                        </div>
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <h5 class="text-gold">1,096 Races</h5>
+                            <p class="text-muted mb-0">Analyzed</p>
+                        </div>
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <h5 class="text-positive">857 Drivers</h5>
+                            <p class="text-muted mb-0">Tracked</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-ferrari">211 Teams</h5>
+                            <p class="text-muted mb-0">Documented</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-compass me-2"></i>Explore Specific Areas
+                    </h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ url_for('eda.driver_analysis') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-person-circle me-1"></i>Driver Performance
+                        </a>
+                        <a href="{{ url_for('eda.constructor_analysis') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-speedometer2 me-1"></i>Constructor Analysis
+                        </a>
+                        <a href="{{ url_for('eda.circuit_analysis') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-geo-alt-fill me-1"></i>Circuit Insights
+                        </a>
+                        <a href="{{ url_for('eda.standings_analysis') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-trophy-fill me-1"></i>Championship Trends
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Render main chart
+    var chartData = {{ chart|safe }};
+    Plotly.newPlot('racesPerSeasonChart', chartData.data, chartData.layout, {responsive: true});
+
+    // Sample data for drivers per season
+    var driversData = {
+        x: Array.from({length: 30}, (_, i) => 1994 + i),
+        y: [20, 22, 23, 22, 22, 22, 22, 24, 20, 22, 22, 20, 22, 24, 22, 20, 22, 20, 20, 20, 22, 22, 20, 20, 20, 20, 20, 20, 20, 20],
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#F5C542', width: 2},
+        marker: {size: 4}
+    };
+
+    var driversLayout = {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Number of Drivers'},
+        hovermode: 'x unified'
+    };
+
+    Plotly.newPlot('driversPerSeasonChart', [driversData], driversLayout, {responsive: true});
+
+    // Sample data for constructors per season
+    var constructorsData = {
+        x: Array.from({length: 30}, (_, i) => 1994 + i),
+        y: [12, 11, 11, 11, 11, 11, 11, 10, 11, 11, 12, 11, 11, 11, 11, 10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#2ECC71', width: 2},
+        marker: {size: 4}
+    };
+
+    var constructorsLayout = {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Number of Constructors'},
+        hovermode: 'x unified'
+    };
+
+    Plotly.newPlot('constructorsPerSeasonChart', [constructorsData], constructorsLayout, {responsive: true});
+</script>
+{% endblock %}

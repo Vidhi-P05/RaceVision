@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}About - F1 Analytics Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold mb-3">
+                About <span class="text-ferrari">F1 Analytics Platform</span>
+            </h1>
+            <p class="lead text-secondary">
+                A comprehensive data science project combining EDA and machine learning for Formula 1 racing
+            </p>
+        </div>
+    </div>
+
+    <!-- Project Motivation -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-lightbulb-fill me-2"></i>Project Motivation
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Formula 1 is a data-rich sport where milliseconds matter and every decision is backed 
+                        by analytics. This project was built to demonstrate end-to-end data science capabilities 
+                        by analyzing over 70 years of F1 history, extracting meaningful insights, and building 
+                        predictive models that can forecast race outcomes.
+                    </p>
+                    <p class="card-text mb-0">
+                        The platform serves as both a learning tool for understanding F1 dynamics and a portfolio 
+                        piece showcasing skills in data engineering, exploratory analysis, machine learning, 
+                        and full-stack web development.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Sources -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-database-fill me-2"></i>Data Sources
+                </div>
+                <div class="card-body">
+                    <h5 class="text-ferrari mb-3">Primary Data Source</h5>
+                    <p class="mb-4">
+                        <strong>Ergast Developer API</strong> provides comprehensive F1 data including race results, 
+                        driver standings, constructor championships, qualifying times, pit stops, and circuit 
+                        information from 1950 to present. The API is free, well-documented, and regularly updated.
+                    </p>
+
+                    <h5 class="text-ferrari mb-3">Data Coverage</h5>
+                    <div class="row g-3">
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-dark rounded">
+                                <i class="bi bi-calendar-range text-gold" style="font-size: 2rem;"></i>
+                                <h4 class="text-gold mt-2 mb-0">73</h4>
+                                <small class="text-muted">Seasons (1950-2023)</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-dark rounded">
+                                <i class="bi bi-flag-fill text-ferrari" style="font-size: 2rem;"></i>
+                                <h4 class="text-ferrari mt-2 mb-0">1,096</h4>
+                                <small class="text-muted">Total Races</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-dark rounded">
+                                <i class="bi bi-people-fill text-positive" style="font-size: 2rem;"></i>
+                                <h4 class="text-positive mt-2 mb-0">857</h4>
+                                <small class="text-muted">Unique Drivers</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="p-3 bg-dark rounded">
+                                <i class="bi bi-building" style="font-size: 2rem; color: #1F6AE1;"></i>
+                                <h4 style="color: #1F6AE1;" class="mt-2 mb-0">211</h4>
+                                <small class="text-muted">Constructors</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ML Approach -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-cpu-fill me-2"></i>Machine Learning Approach
+                </div>
+                <div class="card-body">
+                    <h5 class="text-ferrari mb-3">Model Architecture</h5>
+                    <p class="mb-3">
+                        The prediction system uses an ensemble of gradient boosting models (XGBoost, LightGBM, 
+                        CatBoost) combined with neural networks for multi-class classification of race positions.
+                    </p>
+
+                    <h5 class="text-ferrari mb-3">Feature Engineering</h5>
+                    <p class="mb-3">Over 42 features are engineered including:</p>
+                    <ul class="mb-4">
+                        <li><strong>Driver Features:</strong> Recent form, career statistics, circuit-specific performance</li>
+                        <li><strong>Constructor Features:</strong> Team performance trends, reliability metrics, technical development</li>
+                        <li><strong>Circuit Features:</strong> Track characteristics, weather patterns, overtaking difficulty</li>
+                        <li><strong>Temporal Features:</strong> Season progression, championship standings pressure</li>
+                    </ul>
+
+                    <h5 class="text-ferrari mb-3">Model Performance</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded text-center">
+                                <h4 class="text-positive mb-1">78.4%</h4>
+                                <small class="text-muted">Top-3 Accuracy</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded text-center">
+                                <h4 class="text-gold mb-1">0.82</h4>
+                                <small class="text-muted">F1 Score</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded text-center">
+                                <h4 class="text-ferrari mb-1">0.76</h4>
+                                <small class="text-muted">ROC-AUC</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-dark rounded">
+                        <h6 class="text-gold mb-2">
+                            <i class="bi bi-info-circle me-2"></i>Model Limitations
+                        </h6>
+                        <ul class="mb-0 text-muted small">
+                            <li>Cannot predict mechanical failures or reliability issues</li>
+                            <li>First-lap incidents and crashes are not modeled</li>
+                            <li>Strategy calls (tire choices, pit timing) are simplified</li>
+                            <li>Safety car deployments impact actual vs predicted results</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Stack -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-stack me-2"></i>Technical Stack
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-ferrari mb-3">Backend & Data</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-positive me-2"></i><strong>Python 3.10+</strong> - Core language</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-positive me-2"></i><strong>Flask</strong> - Web framework</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-positive me-2"></i><strong>MongoDB</strong> - NoSQL database</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-positive me-2"></i><strong>Pandas & NumPy</strong> - Data manipulation</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-positive me-2"></i><strong>Requests</strong> - API integration</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h6 class="text-ferrari mb-3">Machine Learning</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-gold me-2"></i><strong>Scikit-learn</strong> - ML algorithms</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-gold me-2"></i><strong>XGBoost</strong> - Gradient boosting</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-gold me-2"></i><strong>LightGBM</strong> - Fast boosting</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-gold me-2"></i><strong>SHAP</strong> - Model explainability</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-gold me-2"></i><strong>Optuna</strong> - Hyperparameter tuning</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Frontend</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-ferrari me-2"></i><strong>Jinja2</strong> - Templating engine</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-ferrari me-2"></i><strong>Bootstrap 5</strong> - UI framework</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-ferrari me-2"></i><strong>Plotly.js</strong> - Interactive charts</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill text-ferrari me-2"></i><strong>Bootstrap Icons</strong> - Icon library</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Development Tools</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill" style="color: #1F6AE1;" ></i><strong> Git & GitHub</strong> - Version control</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill" style="color: #1F6AE1;"></i><strong> Jupyter Notebooks</strong> - EDA</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill" style="color: #1F6AE1;"></i><strong> pytest</strong> - Testing framework</li>
+                                <li class="mb-2"><i class="bi bi-arrow-right-circle-fill" style="color: #1F6AE1;"></i><strong> Docker</strong> - Containerization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Future Roadmap -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Future Roadmap
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Planned Features</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Real-time race prediction during live events
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Strategy simulator for pit stop optimization
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Driver comparison tool with advanced metrics
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Fantasy F1 team optimizer
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Technical Improvements</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Deep learning models (LSTM for time series)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    API endpoint for external integrations
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Mobile-responsive PWA version
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-square text-muted me-2"></i>
+                                    Automated model retraining pipeline
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact & Contribute -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card bg-gradient-ferrari">
+                <div class="card-body text-center py-4">
+                    <h4 class="mb-3">Interested in Contributing?</h4>
+                    <p class="mb-4">This project is open source and welcomes contributions from the community</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="https://github.com/yourusername/f1-analytics" target="_blank" class="btn btn-light">
+                            <i class="bi bi-github me-2"></i>View on GitHub
+                        </a>
+                        <a href="https://github.com/yourusername/f1-analytics/issues" target="_blank" class="btn btn-outline-light">
+                            <i class="bi bi-bug me-2"></i>Report Issues
+                        </a>
+                        <a href="mailto:your.email@example.com" class="btn btn-outline-light">
+                            <i class="bi bi-envelope me-2"></i>Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

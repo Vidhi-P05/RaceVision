@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+
+{% block title %}Constructor Analysis - F1 Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="bi bi-speedometer2 text-ferrari me-3"></i>
+                    Constructor Performance Analysis
+                </h1>
+                <p class="section-subtitle">Team dominance, technical evolution, and championship records</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Constructor Selector -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <label for="constructorSelect" class="form-label">Select Constructor</label>
+                        </div>
+                        <div class="col-md-7">
+                            <select class="form-select" id="constructorSelect">
+                                <option selected>Red Bull Racing</option>
+                                <option>Mercedes</option>
+                                <option>Ferrari</option>
+                                <option>McLaren</option>
+                                <option>Williams</option>
+                                <option>Renault / Alpine</option>
+                                <option>Aston Martin</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" id="loadConstructor">
+                                <i class="bi bi-search me-1"></i>Load
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Constructor Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-trophy-fill text-gold" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-gold mt-3 mb-1">6</h3>
+                    <p class="text-muted mb-0">Championships</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-flag-fill text-ferrari" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-ferrari mt-3 mb-1">113</h3>
+                    <p class="text-muted mb-0">Race Wins</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-award-fill text-positive" style="font-size: 2.5rem;"></i>
+                    <h3 class="text-positive mt-3 mb-1">267</h3>
+                    <p class="text-muted mb-0">Podiums</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-calendar-range" style="font-size: 2.5rem; color: #1F6AE1;"></i>
+                    <h3 style="color: #1F6AE1;" class="mt-3 mb-1">19</h3>
+                    <p class="text-muted mb-0">Active Years</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Championship Dominance Timeline -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Championship Dominance Timeline
+                </h3>
+                <div id="championshipTimelineChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Dominance Era:</strong> Red Bull Racing achieved unprecedented dominance from 
+                        2010-2013 with four consecutive championships, and returned to supremacy in 2021-2023, 
+                        demonstrating their technical excellence and strategic capabilities across two distinct eras.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Points Trend & Win Rate -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-graph-up"></i>
+                    Points Accumulation by Season
+                </h3>
+                <div id="pointsTrendChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Performance Trend:</strong> Points accumulation shows cyclical patterns 
+                        corresponding to regulation changes, with peaks during dominant years exceeding 750 points.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-percent"></i>
+                    Win Rate Evolution
+                </h3>
+                <div id="winRateChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Consistency:</strong> Win rate peaked at 86% in 2023, indicating exceptional 
+                        reliability and competitive advantage in the current regulation era.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reliability & DNF Analysis -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-tools"></i>
+                    Reliability Metrics & DNF Rate
+                </h3>
+                <div id="reliabilityChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Technical Excellence:</strong> DNF rate dropped from 15% in early years to 
+                        below 5% in recent seasons, reflecting improved reliability and engineering maturity. 
+                        This reliability advantage is crucial for championship success.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Pairing Comparison -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-people-fill me-2"></i>Driver Pairing Performance
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Season</th>
+                                    <th>Driver 1</th>
+                                    <th>Driver 2</th>
+                                    <th>Combined Wins</th>
+                                    <th>Combined Points</th>
+                                    <th>Championship</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-gold">2023</td>
+                                    <td>Max Verstappen</td>
+                                    <td>Sergio Pérez</td>
+                                    <td class="text-positive">21</td>
+                                    <td class="text-positive">860</td>
+                                    <td><span class="badge badge-gold">Won</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2022</td>
+                                    <td>Max Verstappen</td>
+                                    <td>Sergio Pérez</td>
+                                    <td class="text-positive">17</td>
+                                    <td class="text-positive">759</td>
+                                    <td><span class="badge badge-gold">Won</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-gold">2021</td>
+                                    <td>Max Verstappen</td>
+                                    <td>Sergio Pérez</td>
+                                    <td>11</td>
+                                    <td>585</td>
+                                    <td><span class="badge badge-gold">Won</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2020</td>
+                                    <td>Max Verstappen</td>
+                                    <td>Alex Albon</td>
+                                    <td>2</td>
+                                    <td>319</td>
+                                    <td><span class="badge" style="background: #8A8A8A;">3rd</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2019</td>
+                                    <td>Max Verstappen</td>
+                                    <td>Pierre Gasly / Alex Albon</td>
+                                    <td>3</td>
+                                    <td>417</td>
+                                    <td><span class="badge" style="background: #8A8A8A;">3rd</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Constructor vs Competitors -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-bar-chart-line me-2"></i>Competitive Comparison (2023)
+                </div>
+                <div class="card-body">
+                    <div id="competitiveComparisonChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historical Achievements -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-star-fill me-2"></i>Historical Achievements
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Team Records</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-gold me-2"></i>
+                                    <strong>Most consecutive championships:</strong> 4 (2010-2013)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-gold me-2"></i>
+                                    <strong>Highest season win percentage:</strong> 86% (2023)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-gold me-2"></i>
+                                    <strong>Most wins in a season:</strong> 21 out of 22 (2023)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-gold me-2"></i>
+                                    <strong>Constructor championships:</strong> 6 titles
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-ferrari mb-3">Notable Milestones</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-trophy-fill text-positive me-2"></i>
+                                    First championship: 2010 (Sebastian Vettel)
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-trophy-fill text-positive me-2"></i>
+                                    First race win: 2009 Chinese Grand Prix
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-trophy-fill text-positive me-2"></i>
+                                    100th win: 2023 Belgian Grand Prix
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-trophy-fill text-positive me-2"></i>
+                                    Longest winning streak: 15 consecutive races (2023)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Championship Timeline
+    var timelineData = {
+        x: [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        y: [7, 7, 5, 7, 2, 1, 1, 1, 1, 4, 4, 2, 3, 3, 3, 2, 1, 1, 1],
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#E10600', width: 3},
+        marker: {size: 10, color: '#E10600'},
+        fill: 'tozeroy',
+        fillcolor: 'rgba(225, 6, 0, 0.1)'
+    };
+
+    Plotly.newPlot('championshipTimelineChart', [timelineData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Championship Position', autorange: 'reversed'},
+        hovermode: 'x unified',
+        annotations: [
+            {x: 2010, y: 1, text: '1st Title', showarrow: true, arrowcolor: '#F5C542', font: {color: '#F5C542'}},
+            {x: 2023, y: 1, text: '6th Title', showarrow: true, arrowcolor: '#F5C542', font: {color: '#F5C542'}}
+        ]
+    }, {responsive: true});
+
+    // Points Trend
+    var pointsData = {
+        x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        y: [498, 650, 460, 596, 405, 496, 468, 368, 419, 417, 319, 585, 759, 860],
+        type: 'bar',
+        marker: {
+            color: [498, 650, 460, 596, 405, 496, 468, 368, 419, 417, 319, 585, 759, 860],
+            colorscale: [
+                [0, '#8A8A8A'],
+                [0.5, '#1F6AE1'],
+                [1, '#E10600']
+            ]
+        }
+    };
+
+    Plotly.newPlot('pointsTrendChart', [pointsData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Total Points'},
+        hovermode: 'x unified'
+    }, {responsive: true});
+
+    // Win Rate
+    var winRateData = {
+        x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        y: [47, 63, 35, 59, 16, 26, 21, 15, 19, 14, 12, 50, 77, 86],
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: {color: '#2ECC71', width: 3},
+        marker: {size: 8}
+    };
+
+    Plotly.newPlot('winRateChart', [winRateData], {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'Win Rate (%)', range: [0, 100]},
+        hovermode: 'x unified'
+    }, {responsive: true});
+
+    // Reliability (DNF Rate)
+    var reliabilityData = [{
+        x: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
+        y: [12, 8, 14, 6, 18, 15, 13, 16, 11, 14, 9, 7, 5, 3],
+        type: 'bar',
+        marker: {color: '#E74C3C'},
+        name: 'DNF Rate'
+    }];
+
+    Plotly.newPlot('reliabilityChart', reliabilityData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Season'},
+        yaxis: {title: 'DNF Rate (%)'},
+        hovermode: 'x unified'
+    }, {responsive: true});
+
+    // Competitive Comparison
+    var comparisonData = [
+        {
+            x: ['Red Bull', 'Mercedes', 'Ferrari', 'McLaren', 'Aston Martin'],
+            y: [860, 409, 406, 302, 280],
+            type: 'bar',
+            marker: {
+                color: ['#E10600', '#00D2BE', '#DC0000', '#FF8700', '#006F62']
+            }
+        }
+    ];
+
+    Plotly.newPlot('competitiveComparisonChart', comparisonData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Constructor'},
+        yaxis: {title: 'Points (2023 Season)'},
+        height: 400
+    }, {responsive: true});
+</script>
+{% endblock %}

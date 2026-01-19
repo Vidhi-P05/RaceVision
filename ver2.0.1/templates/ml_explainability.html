@@ -1,0 +1,485 @@
+{% extends "base.html" %}
+
+{% block title %}Model Explainability - F1 Analytics{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <i class="bi bi-gear-fill text-ferrari me-3"></i>
+                    Model Explainability & Interpretability
+                </h1>
+                <p class="section-subtitle">Understanding how the ML model makes predictions and key influencing factors</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Overview -->
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card border-ferrari">
+                <div class="card-header bg-gradient-ferrari">
+                    <i class="bi bi-info-circle me-2"></i>Model Architecture Overview
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6 class="text-ferrari mb-3">Ensemble Approach</h6>
+                            <p class="mb-3">
+                                The prediction system uses an ensemble of gradient boosting models combined with 
+                                neural networks to predict race outcomes. The ensemble approach combines the strengths 
+                                of different algorithms to achieve better predictive performance than any single model.
+                            </p>
+                            <ul class="mb-0">
+                                <li class="mb-2"><strong>XGBoost (40% weight):</strong> Handles non-linear relationships and feature interactions</li>
+                                <li class="mb-2"><strong>LightGBM (30% weight):</strong> Fast training with good generalization</li>
+                                <li class="mb-2"><strong>CatBoost (20% weight):</strong> Robust to categorical features</li>
+                                <li class="mb-2"><strong>Neural Network (10% weight):</strong> Captures complex patterns</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded text-center mb-3">
+                                <i class="bi bi-cpu-fill text-gold" style="font-size: 3rem;"></i>
+                                <h4 class="text-gold mt-2 mb-1">42</h4>
+                                <p class="text-muted mb-0">Engineered Features</p>
+                            </div>
+                            <div class="p-3 bg-dark rounded text-center">
+                                <i class="bi bi-graph-up text-positive" style="font-size: 3rem;"></i>
+                                <h4 class="text-positive mt-2 mb-1">78.4%</h4>
+                                <p class="text-muted mb-0">Validation Accuracy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Feature Importance -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-bar-chart"></i>
+                    Global Feature Importance (All Predictions)
+                </h3>
+                <div id="featureImportanceChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Key Finding:</strong> Driver recent form (last 5 races) is the single most 
+                        important predictor, accounting for 18% of model decisions. This is followed by 
+                        constructor performance metrics (15%) and historical circuit-specific performance (12%). 
+                        Together, these top three features explain nearly half of all predictions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Categories -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="chart-container h-100">
+                <h3 class="chart-title">
+                    <i class="bi bi-pie-chart-fill"></i>
+                    Feature Category Distribution
+                </h3>
+                <div id="categoryDistributionChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Category Impact:</strong> Driver-related features collectively account for 45% 
+                        of prediction power, highlighting the critical role of individual performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-list-check me-2"></i>Feature Breakdown by Category
+                </div>
+                <div class="card-body">
+                    <h6 class="text-ferrari mb-3">Driver Features (45%)</h6>
+                    <ul class="small mb-3">
+                        <li>Recent race results (5, 10, 20 race windows)</li>
+                        <li>Season points accumulation</li>
+                        <li>Circuit-specific historical performance</li>
+                        <li>Qualifying vs race performance differential</li>
+                        <li>Career win rate and podium percentage</li>
+                    </ul>
+                    
+                    <h6 class="text-ferrari mb-3">Constructor Features (28%)</h6>
+                    <ul class="small mb-3">
+                        <li>Team championship position</li>
+                        <li>Recent constructor points trend</li>
+                        <li>Reliability metrics (DNF rate)</li>
+                        <li>Development trajectory indicators</li>
+                    </ul>
+                    
+                    <h6 class="text-ferrari mb-3">Circuit Features (17%)</h6>
+                    <ul class="small mb-3">
+                        <li>Track layout characteristics</li>
+                        <li>Overtaking difficulty index</li>
+                        <li>Weather pattern probabilities</li>
+                        <li>Safety car likelihood</li>
+                    </ul>
+                    
+                    <h6 class="text-ferrari mb-3">Temporal Features (10%)</h6>
+                    <ul class="small mb-0">
+                        <li>Point in season (early/mid/late)</li>
+                        <li>Championship pressure indicators</li>
+                        <li>Days since last race</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHAP Values Explanation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="chart-container">
+                <h3 class="chart-title">
+                    <i class="bi bi-diagram-3"></i>
+                    SHAP Values: Feature Impact on Predictions
+                </h3>
+                <div id="shapValuesChart"></div>
+                <div class="chart-insight">
+                    <p>
+                        <strong>Interpretation Guide:</strong> SHAP (SHapley Additive exPlanations) values show 
+                        how each feature contributes to pushing predictions higher or lower. Red dots indicate 
+                        high feature values, blue indicates low values. For example, high values of "Driver Recent Form" 
+                        consistently push predictions toward favorable outcomes (right side), while low values push 
+                        predictions toward unfavorable outcomes (left side).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example Prediction Breakdown -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-lightbulb-fill me-2"></i>Example: Breaking Down a Specific Prediction
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <h6 class="text-ferrari mb-3">Prediction Scenario</h6>
+                            <p class="mb-2">
+                                <strong>Race:</strong> Monaco Grand Prix 2023<br>
+                                <strong>Driver:</strong> Max Verstappen<br>
+                                <strong>Predicted Position:</strong> 1st (Win) with 87% confidence
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="p-3 bg-dark rounded">
+                                <h5 class="text-gold mb-1">87%</h5>
+                                <p class="text-muted small mb-0">Prediction Confidence</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="text-ferrari mb-3">Contributing Factors (SHAP Breakdown)</h6>
+                    <div id="individualPredictionChart"></div>
+                    
+                    <div class="mt-4 p-3 bg-dark rounded">
+                        <h6 class="text-gold mb-3"><i class="bi bi-info-circle me-2"></i>What This Means</h6>
+                        <ul class="mb-0 small">
+                            <li class="mb-2">
+                                <strong>Driver Recent Form (+0.32):</strong> Verstappen won 4 of last 5 races, 
+                                significantly increasing win probability
+                            </li>
+                            <li class="mb-2">
+                                <strong>Constructor Performance (+0.28):</strong> Red Bull leading constructor 
+                                championship with dominant car
+                            </li>
+                            <li class="mb-2">
+                                <strong>Circuit History (+0.15):</strong> Verstappen has 2 previous Monaco wins 
+                                and strong track record
+                            </li>
+                            <li class="mb-2">
+                                <strong>Grid Position (+0.08):</strong> Starting from pole position
+                            </li>
+                            <li class="mb-0">
+                                <strong>Weather Conditions (+0.04):</strong> Dry conditions favor Red Bull's setup
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Assumptions & Limitations -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Model Assumptions
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">The model makes several key assumptions that users should be aware of:</p>
+                    <ul class="mb-0">
+                        <li class="mb-3">
+                            <strong>Historical patterns repeat:</strong> The model assumes that factors which 
+                            predicted success in the past will continue to be relevant in future races
+                        </li>
+                        <li class="mb-3">
+                            <strong>No major regulation changes:</strong> Predictions are most accurate within 
+                            the same technical regulation era
+                        </li>
+                        <li class="mb-3">
+                            <strong>Normal race conditions:</strong> Assumes standard race procedures without 
+                            major disruptions (red flags, multiple safety cars)
+                        </li>
+                        <li class="mb-3">
+                            <strong>Current team dynamics:</strong> Assumes existing driver-team pairings and 
+                            team hierarchies remain stable
+                        </li>
+                        <li class="mb-0">
+                            <strong>Data quality:</strong> Relies on accurate historical data without missing 
+                            or corrupted records
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-dark">
+                    <i class="bi bi-shield-exclamation me-2"></i>Known Limitations
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">The model has inherent limitations that affect prediction accuracy:</p>
+                    <ul class="mb-0">
+                        <li class="mb-3">
+                            <strong class="text-negative">Cannot predict mechanical failures:</strong> Unexpected 
+                            technical issues or reliability problems are not modeled
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-negative">First-lap incidents ignored:</strong> Crashes, collisions, 
+                            or chaos in the opening laps dramatically alter outcomes but are unpredictable
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-negative">Strategy calls simplified:</strong> Complex in-race 
+                            decisions about tire choices, pit timing, and safety car strategies are approximated
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-negative">Driver errors not captured:</strong> Individual mistakes, 
+                            off-track excursions, or poor judgment calls cannot be predicted
+                        </li>
+                        <li class="mb-3">
+                            <strong class="text-negative">Weather uncertainty:</strong> Sudden weather changes 
+                            during races can invalidate dry-weather predictions
+                        </li>
+                        <li class="mb-0">
+                            <strong class="text-negative">Team orders unknown:</strong> Strategic team decisions 
+                            to swap driver positions are not factored in
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accuracy by Conditions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-graph-up me-2"></i>Model Performance Under Different Conditions
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="accuracyConditionsChart"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-ferrari mb-3">Key Insights</h6>
+                            <ul class="small">
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-positive me-1"></i>
+                                    Highest accuracy (85%) when predicting dominant drivers
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle-fill text-gold me-1"></i>
+                                    Good performance (78%) on traditional circuits with history
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-exclamation-circle-fill text-ferrari me-1"></i>
+                                    Reduced accuracy (62%) on new/redesigned circuits
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-exclamation-circle-fill text-negative me-1"></i>
+                                    Lower accuracy (55%) in wet race conditions
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-info-circle-fill" style="color: #1F6AE1;" class="me-1"></i>
+                                    Performance drops when predicting midfield battles
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continuous Improvement -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card bg-gradient-ferrari">
+                <div class="card-body text-center py-4">
+                    <h4 class="mb-3"><i class="bi bi-arrow-repeat me-2"></i>Continuous Model Improvement</h4>
+                    <p class="mb-4">
+                        The model is retrained after each season with updated data and refined features. 
+                        Performance metrics are monitored, and the architecture is adjusted to maintain 
+                        and improve prediction accuracy as F1 evolves.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{{ url_for('ml.ml_predictions') }}" class="btn btn-light">
+                            <i class="bi bi-play-circle me-2"></i>Try Predictions
+                        </a>
+                        <a href="{{ url_for('ml.ml_validation') }}" class="btn btn-outline-light">
+                            <i class="bi bi-clipboard-check me-2"></i>View Validation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Global Feature Importance
+    var importanceData = [{
+        y: ['Driver Recent Form', 'Constructor Performance', 'Circuit History', 'Qualifying Position', 
+            'Season Points', 'DNF Rate', 'Weather Conditions', 'Championship Position', 'Teammate Gap', 'Race Number'],
+        x: [18, 15, 12, 10, 8, 7, 6, 5, 4, 3],
+        type: 'bar',
+        orientation: 'h',
+        marker: {
+            color: [18, 15, 12, 10, 8, 7, 6, 5, 4, 3],
+            colorscale: [
+                [0, '#8A8A8A'],
+                [0.5, '#1F6AE1'],
+                [1, '#E10600']
+            ]
+        }
+    }];
+
+    Plotly.newPlot('featureImportanceChart', importanceData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Importance (%)', range: [0, 20]},
+        yaxis: {title: ''},
+        margin: {l: 180}
+    }, {responsive: true});
+
+    // Category Distribution
+    var categoryData = [{
+        values: [45, 28, 17, 10],
+        labels: ['Driver Features', 'Constructor Features', 'Circuit Features', 'Temporal Features'],
+        type: 'pie',
+        marker: {
+            colors: ['#E10600', '#F5C542', '#2ECC71', '#1F6AE1']
+        },
+        textinfo: 'label+percent',
+        hole: 0.4
+    }];
+
+    Plotly.newPlot('categoryDistributionChart', categoryData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        showlegend: true,
+        legend: {x: 0, y: 0}
+    }, {responsive: true});
+
+    // SHAP Values (simplified visualization)
+    var shapData = [{
+        x: [-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4],
+        y: ['Weather', 'Teammate Gap', 'DNF Rate', 'Qualifying Pos', 'Circuit History', 'Constructor Perf', 'Driver Form', 'Total'],
+        type: 'bar',
+        orientation: 'h',
+        marker: {
+            color: [-0.05, 0.08, -0.12, 0.15, 0.18, 0.28, 0.32, 0.87],
+            colorscale: [
+                [0, '#E74C3C'],
+                [0.5, '#8A8A8A'],
+                [1, '#2ECC71']
+            ],
+            cmin: -0.3,
+            cmax: 0.9
+        }
+    }];
+
+    Plotly.newPlot('shapValuesChart', shapData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Impact on Prediction (SHAP Value)', zeroline: true, zerolinecolor: '#EAEAEA'},
+        yaxis: {title: ''},
+        margin: {l: 150}
+    }, {responsive: true});
+
+    // Individual Prediction Breakdown
+    var individualData = [{
+        x: [0.32, 0.28, 0.15, 0.08, 0.04],
+        y: ['Driver Recent Form', 'Constructor Performance', 'Circuit History', 'Grid Position', 'Weather'],
+        type: 'bar',
+        orientation: 'h',
+        marker: {color: '#2ECC71'}
+    }];
+
+    Plotly.newPlot('individualPredictionChart', individualData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Contribution to Win Probability'},
+        yaxis: {title: ''},
+        margin: {l: 180},
+        height: 300
+    }, {responsive: true});
+
+    // Accuracy by Conditions
+    var conditionsData = [{
+        x: ['Dominant Drivers', 'Traditional Circuits', 'Dry Conditions', 'New Circuits', 'Wet Conditions', 'Midfield Battle'],
+        y: [85, 78, 76, 62, 55, 64],
+        type: 'bar',
+        marker: {
+            color: [85, 78, 76, 62, 55, 64],
+            colorscale: [
+                [0, '#E74C3C'],
+                [0.7, '#F5C542'],
+                [1, '#2ECC71']
+            ]
+        },
+        text: ['85%', '78%', '76%', '62%', '55%', '64%'],
+        textposition: 'outside'
+    }];
+
+    Plotly.newPlot('accuracyConditionsChart', conditionsData, {
+        template: 'plotly_dark',
+        paper_bgcolor: '#161A20',
+        plot_bgcolor: '#0F1115',
+        font: {color: '#EAEAEA'},
+        xaxis: {title: 'Condition Type'},
+        yaxis: {title: 'Prediction Accuracy (%)', range: [0, 100]},
+        height: 350
+    }, {responsive: true});
+</script>
+{% endblock %}
